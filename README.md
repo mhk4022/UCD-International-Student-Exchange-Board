@@ -8,6 +8,11 @@
 
 ## 機能一覧
 
+- EC2
+- RDS
+- Route53
+- PHP
+- MySQL
 - 記事投稿機能
 - 写真投稿機能
 - 改行適用機能
@@ -17,9 +22,6 @@
 - 設定変更機能
 - 投稿削除機能
 - ログアウト機能
-- PHP
-- MySQL
-- AWS
 
 ![スクリーンショット 2022-09-12 085433](https://user-images.githubusercontent.com/78911947/189554799-c496f743-bae7-47b1-b78a-5eeb2c95d332.jpg)
 ![スクリーンショット 2022-09-12 090631](https://user-images.githubusercontent.com/78911947/189554973-3998052d-9eca-43d9-b914-2a5a20848e53.jpg)
