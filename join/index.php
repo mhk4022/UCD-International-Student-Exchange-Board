@@ -143,8 +143,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div id="head">
         <h1>UC Dacis 留学生交流サイト</h1>
     </div>
+    <div style="text-align: right" ><a href="../login.php" class="hbtn" id="logout">ログイン画面に戻る</a></div>
     <div id="content">
-        <div style="text-align: right" ><a href="../login.php" class="btn" id="logout">ログイン画面に戻る</a></div>
         <?php if(count($errors) > 0): ?>
             <?php
                 foreach($errors as $value){
@@ -154,19 +154,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <?php else: ?>
             <p>必要事項をご記入ください。</p>
             <form action="" method="post" enctype="multipart/form-data">
-                <dl>
-                    <dt><span class="required">ニックネーム  ＜必須＞</span></dt>
-                    <dd>
+                    <p><span class="required">ニックネーム  ＜必須＞</span></p>
+                    <p>
                         <input type="text" name="name" size="35" maxlength="255" value="<?php echo h($form['name']);?>"/>
                         <?php if(isset($error['name']) && $error['name'] == 'blank'):?>
                             <p class="error">* ニックネームを入力してください</p>
                         <?php endif; ?>
-                    </dd>
-                    <dt><span class="required">メールアドレス</span></dt>
-                    <dd>
+                    </p>
+                    <p><span class="required">メールアドレス</span></p>
+                    <p>
                         <div><?php echo h($mail);?></div>
-                    <dt><span class="required">パスワード  ＜必須＞</span></dt>
-                    <dd>
+                    </p>
+                    <p>
+                    <span class="required">パスワード  ＜必須＞</span>
+                    </p>
+                    <p>
                         <input type="password" name="password" size="10" maxlength="20" value="<?php echo h($form['password']);?>"/>
                         <?php if(isset($error['password'])&& $error['password'] == 'blank'):?>
                             <p class="error">* パスワードを入力してください</p>
@@ -174,9 +176,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <?php if(isset($error['password']) && $error['password'] == 'length'):?>
                             <p class="error">* パスワードは4文字以上で入力してください</p>
                         <?php endif;?>
-                    </dd>
-                    <dt>アカウント写真</dt>
-                    <dd>
+                    </p>
+                    <p>アカウント写真</p>
+                    <p>
                         <input type="file" name="image" size="35" class="btn" value=""/>
                         <?php if(isset($error['image']) && $error['image'] == 'type'):?>
                             <p class="error">* 写真などは「.png」または「.jpg」の画像を指定してください</p>
@@ -185,8 +187,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                             <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
                         <?php endif;?>
-                    </dd>
-                </dl>
+                    </p>
                 <div><input type="submit" class="btn" value="入力内容を確認する"/></div>
             </form>
         <?php endif;?>

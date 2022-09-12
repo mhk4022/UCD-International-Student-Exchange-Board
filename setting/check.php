@@ -88,22 +88,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		</div>
 
 		<div id="content">
-			<p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
+			<p>記入した内容を確認して、</p>
+			<p>「登録する」ボタンをクリックしてください</p>
 			<form action="" method="post">
-				<dl>
-					<dt>ニックネーム</dt>
-					<dd><?php echo h($name);?></dd>
-					<dt>メールアドレス</dt>
-					<dd><?php echo h($email);?></dd>
-					<dt>パスワード</dt>
-					<dd>
-						セキュリティのため非表示
-					</dd>
-					<dt>写真</dt>
-					<dd>
-						<img src="../member_picture/<?php echo h($picture);?>" width="100" alt="" />
-					</dd>
-				</dl>
+				<p>ニックネーム</p>
+				<p><?php echo h($name);?></p>
+				<p>メールアドレス</p>
+				<p><?php echo h($email);?></p>
+				<p>パスワード</p>
+				<p>
+					セキュリティのため非表示
+				</p>
+				<p>写真</p>
+				<p>
+					<img src="../member_picture/<?php echo h($picture);?>" width="100" alt="" />
+				</p>
 				<div><a class="btn" href="index.php?action=rewrite">書き直す</a>  <input class="btn" type="submit" value="登録する" /></div>
 			</form>
 		</div>

@@ -2,43 +2,84 @@
 session_start();
 require('../library.php');
 
-if(isset($_SESSION['id']) && isset($_SESSION['name'])){
-    $id = $_SESSION['id'];
-    $name = $_SESSION['name'];
-}else{
-    header('Location: ../login.php');
+//クロスサイトリクエストフォージェリ（CSRF）対策
+$_SESSION['token'] = base64_encode(openssl_random_pseudo_bytes(32));
+$token = $_SESSION['token'];
+//クリックジャッキング対策
+header('X-FRAME-OPTIONS: SAMEORIGIN');
+
+$errors = array();
+
+$db = dbconnect();
+
+if(empty($_GET)){
+    header('Location:sign_up.php');
     exit();
-}
-
-$db=dbconnect();
-
-$stmt = $db->prepare('select name, email from members where id=?'); 
-if(!$stmt){
-    die($db->error);
-}
-
-$stmt->bind_param('i',$id);
-$success = $stmt->execute();
-if(!$success){
-    die($db->error);
-}
-
-$stmt->bind_result($prename, $preemail);
-if($stmt->fetch());
-
-if(isset($form['name'])){
-	$name = $form['name'];
 }else{
-	$name = $prename;
-}
+    if(isset($_GET['urltoken'])){
+        $urltoken = $_GET['urltoken'];
+    }else{
+        $urltoken = NULL;
+    }
+    if($urltoken == ''){
+        $errors['urltoken'] = "トークンがありません"; 
+    }else{
+        try{
+			// DB接続	
+			//flagが0の未登録者 and 仮登録日から24時間以内
 
-$email = $preemail;
+            $stmt = $db->prepare("select count(*) from pre_members where urltoken=? and flag=0 and created > now() - interval 24 hour"); 
+            if(!$stmt){
+                die($db->error);
+            }
+
+            $stmt->bind_param('s',$urltoken);
+            $success = $stmt->execute();
+            if(!$success){
+                die($db->error);
+            }
+				
+			//レコード件数取得
+            $stmt->bind_result($cnt);
+            $stmt->fetch();
+
+			//24時間以内に仮登録され、本登録されていないトークンの場合
+			if($cnt == 1){
+                $stmt = NULL;
+                $stmt = $db->prepare("select mail from pre_members where urltoken=? and flag=0 and created > now() - interval 24 hour"); 
+                if(!$stmt){
+                    var_dump($urltoken);
+                    die($db->error);
+                }
+
+                $stmt->bind_param('s',$urltoken);
+                $success = $stmt->execute();
+                if(!$success){
+                    die($db->error);
+                }
+
+                $stmt->bind_result($mail);
+                $stmt->fetch();
+				$_SESSION['mail'] = $mail;
+
+			}else{
+				$errors['urltoken_timeover'] = "このURLはご利用できません。有効期限が過ぎたかURLが間違えている可能性がございます。もう一度登録をやりなおして下さい。";
+			}
+			//データベース接続切断
+			$stmt = null;
+		}catch (PDOException $e){
+			print('Error:'.$e->getMessage());
+			die();
+		}
+    }
+}
 
 if(isset($_GET['action']) && $_GET['action'] == 'rewrite' && isset($_SESSION['form'])){
     $form = $_SESSION['form'];
 }else{
     $form = [
         'name' => '',
+        'email' => $mail,
         'password' => ''
     ];
 }
@@ -50,9 +91,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if ($form['name'] == ''){
         $error['name'] = 'blank';
     }
-
+    
     $form['password'] = filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING);
-    if(isset($form['password']) && $form['password'] != "" && strlen($form['password']) < 4){
+    if($form['password'] == ''){
+        $error['password'] = 'blank';
+    }else if(strlen($form['password']) < 4){
         $error['password'] = 'length';
     }
 
@@ -90,7 +133,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>設定変更</title>
+    <title>会員登録</title>
 
     <link rel="stylesheet" href="../style.css"/>
 </head>
@@ -98,45 +141,56 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <body>
 <div id="wrap">
     <div id="head">
-        <h1><a href="../index.php" id="Davis">UC Davis 留学生交流サイト</a></h1>
+        <h1>UC Dacis 留学生交流サイト</h1>
     </div>
+    <div style="text-align: right" ><a href="../login.php" class="hbtn" id="logout">ログイン画面に戻る</a></div>
     <div id="content">
-    <div id="setting"><a href="../index.php" class="btn">一覧にもどる</a></div>
-    <div id="logout"><a href="../logout.php" class="btn">ログアウト</a></div>
-        <p>変更事項をご記入ください</p>
-        <p class="error">変更したい箇所に入力してください</p>
-        <form action="" method="post" enctype="multipart/form-data">
-            <dl>
-                <dt><span class="required">ニックネーム</span></dt>
-                <dd>
-                    <input type="text" name="name" size="35" maxlength="255" value="<?php echo h($name);?>"/>
-                    <?php if(isset($error['name']) && $error['name'] == 'blank'):?>
-                        <p class="error">* ニックネームを入力してください</p>
-                    <?php endif; ?>
-                </dd>
-                <dt><span class="required">メールアドレス</span></dt>
-                <dd><?php echo h($email);?>
-                <dt><span class="required">パスワード</span></dt>
-                <dd>
-                    <input type="password" name="password" size="10" maxlength="20" value=>
-                    <?php if(isset($error['email']) && $error['password'] == 'length'):?>
-                        <p class="error">* パスワードは4文字以上で入力してください</p>
-                    <?php endif;?>
-                </dd>
-                <dt>アカウント写真</dt>
-                <dd>
-                    <input type="file" name="image" size="35" class="btn" value=""/>
-                    <?php if(isset($error['image']) && $error['image'] == 'type'):?>
-                        <p class="error">* 写真などは「.png」または「.jpg」の画像を指定してください</p>
-                    <?php endif;?>
-                    <?php if(isset($error['image']) && $error['image'] == 'type'):?>
+        <?php if(count($errors) > 0): ?>
+            <?php
+                foreach($errors as $value){
+                    echo "<p class='error'>".$value."</p>";
+                }
+            ?>
+        <?php else: ?>
+            <p>必要事項をご記入ください。</p>
+            <form action="" method="post" enctype="multipart/form-data">
+                    <p><span class="required">ニックネーム  ＜必須＞</span></p>
+                    <p>
+                        <input type="text" name="name" size="35" maxlength="255" value="<?php echo h($form['name']);?>"/>
+                        <?php if(isset($error['name']) && $error['name'] == 'blank'):?>
+                            <p class="error">* ニックネームを入力してください</p>
+                        <?php endif; ?>
+                    </p>
+                    <p><span class="required">メールアドレス</span></p>
+                    <p>
+                        <div><?php echo h($mail);?></div>
+                    </p>
+                    <p>
+                    <span class="required">パスワード  ＜必須＞</span>
+                    </p>
+                    <p>
+                        <input type="password" name="password" size="10" maxlength="20" value="<?php echo h($form['password']);?>"/>
+                        <?php if(isset($error['password'])&& $error['password'] == 'blank'):?>
+                            <p class="error">* パスワードを入力してください</p>
+                        <?php endif; ?>
+                        <?php if(isset($error['password']) && $error['password'] == 'length'):?>
+                            <p class="error">* パスワードは4文字以上で入力してください</p>
+                        <?php endif;?>
+                    </p>
+                    <p>アカウント写真</p>
+                    <p>
+                        <input type="file" name="image" size="35" class="btn" value=""/>
+                        <?php if(isset($error['image']) && $error['image'] == 'type'):?>
+                            <p class="error">* 写真などは「.png」または「.jpg」の画像を指定してください</p>
+                        <?php endif;?>
+                        <?php if(isset($error['image']) && $error['image'] == 'type'):?>
 
-                        <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
-                    <?php endif;?>
-                </dd>
-            </dl>
-            <div><input type="submit" class="btn" value="入力内容を確認する"/></div>
-        </form>
+                            <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
+                        <?php endif;?>
+                    </p>
+                <div><input type="submit" class="btn" value="入力内容を確認する"/></div>
+            </form>
+        <?php endif;?>
     </div>
 </body>
 

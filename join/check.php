@@ -72,21 +72,19 @@ EOM;
 		<div id="content">
 			<p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
 			<form action="" method="post">
-				<dl>
-					<dt>ニックネーム</dt>
-					<dd><?php echo h($form['name']);?></dd>
-					<dt>メールアドレス</dt>
-					<dd><?php echo h($form['email']);?></dd>
-					<dt>パスワード</dt>
-					<dd>
+					<p>ニックネーム</p>
+					<p><?php echo h($form['name']);?></p>
+					<p>メールアドレス</p>
+					<p><?php echo h($form['email']);?></p>
+					<p>パスワード</p>
+					<p>
 						セキュリティのため非表示
-					</dd>
-					<dt>写真</dt>
-					<dd>
+					</p>
+					<p>写真</p>
+					<p>
 						<img src="../member_picture/<?php echo h($form['image']);?>" width="100" alt="" />
-					</dd>
-				</dl>
-				<div><a class="btn" href="index.php?action=rewrite">書き直す</a>  <input class="btn" type="submit" value="登録する" /></div>
+					</p>
+				<div><input class="btn" type="submit" value="登録する" /></div>
 			</form>
 		</div>
 

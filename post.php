@@ -78,32 +78,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['message']){
         <h1><a href="index.php" id="Davis">UC Davis 留学生交流サイト</a></h1>
     </div>
     <div id="content">
-        <div style="text-align: right" id="logout"><a href="logout.php" class="btn">ログアウト</a></div>
-        <p><div id="setting"><a href="index.php" class="btn" >一覧にもどる</a></div></p>
+        <div style="text-align: right" id="logout"><a href="logout.php" class="hbtn">ログアウト</a></div>
+        <p><div id="setting"><a href="index.php" class="hbtn" >一覧にもどる</a></div></p>
         <form action="" method="post" enctype="multipart/form-data">
-            <dl>
-                <dt>タイトル</dt>
-                <?php if(isset($error['title']) && $error['title'] == 'blank'):?>
-                        <p class="error"> タイトルを入力してください</p>
-                <?php endif; ?>
-                <dd>
-                    <textarea name="title" cols="50" rows="1"></textarea>
-                </dd>
-                <dt>本文</dt>
-                <?php if(isset($error['text']) && $error['text'] == 'blank'):?>
-                        <p class="error"> 本文を入力してください</p>
-                <?php endif; ?>
-                <dd>
-                    <textarea name="message" cols="50" rows="5"></textarea>
-                </dd>
-            </dl>
+            <p>タイトル</p>
+            <?php if(isset($error['title']) && $error['title'] == 'blank'):?>
+                    <p class="error"> タイトルを入力してください</p>
+            <?php endif; ?>
+            <p>
+                <textarea name="title" cols="50" rows="1"></textarea>
+            </p>
+            <p>本文</p>
+            <?php if(isset($error['text']) && $error['text'] == 'blank'):?>
+                    <p class="error"> 本文を入力してください</p>
+            <?php endif; ?>
+            <p>
+                <textarea name="message" cols="50" rows="5"></textarea>
+            </p>
             <input type="file" name="image" size="35" class="btn" value=""/>
-                    <?php if(isset($error['image']) && $error['image'] == 'type'):?>
-                        <p class="error">* 写真などは「.png」または「.jpg」の画像を指定してください</p>
-                    <?php endif;?>
-                    <?php if(isset($error['image']) && $error['image'] == 'type'):?>
-                        <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
-                    <?php endif;?>
+                <?php if(isset($error['image']) && $error['image'] == 'type'):?>
+                    <p class="error">* 写真などは「.png」または「.jpg」の画像を指定してください</p>
+                <?php endif;?>
+                <?php if(isset($error['image']) && $error['image'] == 'type'):?>
+                    <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
+                <?php endif;?>
             <div>
                 <p>
                     <input type="submit" class="btn" value="投稿する"/>
