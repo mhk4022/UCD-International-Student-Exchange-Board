@@ -111,7 +111,7 @@ if(isset($_POST['submit'])){
         <h1>UC Davis 留学生交流サイト</h1>
     </div>
     <div id="content">
-    <p><div style="text-align: right" id="logout"><a href="../login.php" class="btn">ログイン画面に戻る</a></div></p>
+    <p><div style="text-align: right" id="logout"><a href="../login.php" class="hbtn">ログイン画面に戻る</a></div></p>
         <h2>仮会員登録画面</h2>
         <?php if (isset($_POST['submit']) && count($errors) === 0): ?>
             <!-- 登録完了画面 -->

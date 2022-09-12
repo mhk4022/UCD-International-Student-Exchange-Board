@@ -14,17 +14,23 @@ h1{
     margin-block-end: 0px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+	font-size: 2em;
+}
+@media screen and (max-width: 705px){
+	h1{
+		margin :0px;
+		padding: 0px;
+		margin-block-start: 0px;
+		margin-block-end: 0px;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+		font-size: 1em;
+	}
 }
 
 #head {
-	/* border-left: 1px solid #d4d4d4; */
-	/* border-right: 1px solid #d4d4d4; */
-	/* border-bottom: 1px solid #d4d4d4; */
-	/* background: url(images/bg_head.png) bottom left repeat-x #106eb7; */
 	background-color: rgb(50, 50, 169);
 	color: #fff;
-	/* padding: 20px; */
-	/* margin-bottom: 20px; */
 }
 
 h2 {
@@ -64,41 +70,88 @@ h2 {
 	transition-duration: .5s;
 	-webkit-transition-duration: .5s;
 	font-weight: bold;
-  }
-  .btn:hover {
-	opacity: .7;
-  }
+}
 
-  #logout{
+.hbtn {
+	background: rgb(50, 50, 169); /* 背景色 */
+	color: #fff; /* 文字色 */
+	padding: 16px 40px; /* 上下の余白、左右の余白 */
+	text-decoration: none; /* デフォルトで入る下線を消す */
+	border-radius: 30px; /* 角を丸くする */
+	transition-property: opacity;
+    -webkit-transition-property: opacity;
+	transition-duration: .5s;
+	-webkit-transition-duration: .5s;
+	font-weight: bold;
+}
+@media screen and (max-width:705px){
+	.hbtn {
+		background: rgb(50, 50, 169); /* 背景色 */
+		color: #fff; /* 文字色 */
+		padding: 0.16em 0.4em; /* 上下の余白、左右の余白 */
+		text-decoration: none; /* デフォルトで入る下線を消す */
+		border-radius: 0.3em; /* 角を丸くする */
+		transition-property: opacity;
+		-webkit-transition-property: opacity;
+		transition-duration: .5s;
+		-webkit-transition-duration: .5s;
+		font-weight: bold;
+	}
+}
+
+.btn:hover {
+	opacity: .7;
+}
+
+.hbtn:hover {
+	opacity: .7;
+}
+
+#logout{
 	position: absolute;
     top: 0;
     right: 0;
-  }
+}
+@media screen and (max-width:705px){
+	#logout{
+		position: absolute;
+		top: -11px;
+		right: 0;
+	}
+}
 
-  #sama{
+#sama{
 	margin :0px 0px 20px 0px;
-  }
+}
 
-  .error{
+.error{
 	color :red;
-  }
+}
 
-  #setting{
+#setting{
 	position: absolute;
     top: 0;
     right: 160px;
-  }
+}
+@media screen and (max-width:705px){
+	#setting{
+		position: absolute;
+		top: -11px;
+		right: 100px;
+	}
+}
 
-  #title{
+#title{
 	color: rgb(50, 50, 169);
-  }
+}
 
-	#Davis{
+	
+#Davis{
     text-decoration:none; 
 	color: #fff;
-	}
+}
 
-	#day{
-		text-decoration:underline; 
-		color: rgb(50, 50, 169);
-	}
+#day{
+	text-decoration:underline; 
+	color: rgb(50, 50, 169);
+}

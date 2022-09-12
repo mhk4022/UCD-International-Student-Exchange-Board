@@ -37,8 +37,8 @@ $db = dbconnect();
         <h1><a href="index.php" id="Davis">UC Davis 留学生交流サイト</a></h1>
     </div>
     <div id="content">
-        <div style="text-align: right" id="logout"><a href="logout.php" class="btn">ログアウト</a></div>
-        <p><div style="text-align: right" id="setting"><a href="index.php" class="btn">一覧にもどる</a></div></p>
+        <div style="text-align: right" id="logout"><a href="logout.php" class="hbtn">ログアウト</a></div>
+        <p><div style="text-align: right" id="setting"><a href="index.php" class="hbtn">一覧にもどる</a></div></p>
         <?php 
         $stmt = $db->prepare('select p.id, p.member_id, p.title, p.message, p.created, m.name, m.picture , p.picture from posts p, members m where p.id = ? and m.id=p.member_id order by id desc'); 
         if(!$stmt){

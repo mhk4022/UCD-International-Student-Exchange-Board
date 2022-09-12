@@ -19,6 +19,12 @@ $db = dbconnect();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta
+    name="viewport"
+    content="width=device-width,
+    initial-scale=1"
+    >
+
     <title>UC Davis 留学生交流サイト</title>
 
     <link rel="stylesheet" href="style.css"/>
@@ -27,14 +33,15 @@ $db = dbconnect();
 <body>
 <div id="wrap">
     <div id="head">
-        <h1><a href="#" id="Davis">UC Davis 留学生交流サイト</a></h1>
+        <h1><a href="" id="Davis">UC Davis 留学生交流サイト</a></h1>
     </div>
     <div id="content">
-        <div id="setting"><a href="setting/index.php" class="btn">設定</a></div>
-        <div id="logout" style="text-align: right"><a href="logout.php" class="btn">ログアウト</a></div>
+        <div id="setting"><a href="setting/index.php" class="hbtn">設定</a></div>
+        <div id="logout" style="text-align: right"><a href="logout.php" class="hbtn">ログアウト</a></div>
         <div id="post" style="text-align: center"><a href="post.php" class="btn">投稿する</a></div>
 
-        <div style="text-align: center" id="sama"><?php echo h($name);?>様、投稿しましょう！！他の人の投稿を閲覧しましょう！！</div>
+        <div style="text-align: center" id="sama"><p><?php echo h($name);?>様、投稿しましょう！！</p>
+        他の人の投稿を閲覧しましょう！！</div>
 
         <form action="index.php" method="POST">
             <input type="text" name="textbox">
